@@ -36,12 +36,12 @@ exports.login =  (req, res, next) => {
                             })
                         }
                         if (recordset.recordsets[0][0]){
-                            const result = {
+                            const result = [{
                                 token: '' ,
                                 Name: ''
-                            }
-                            result.token = jwt.sign({userID: recordset.recordsets[0][0].ID } , process.env["PRIVATE_KEY"]);
-                            result.Name = recordset.recordsets[0][0].Name;
+                            }]
+                            result[0].token = jwt.sign({userID: recordset.recordsets[0][0].ID } , process.env["PRIVATE_KEY"]);
+                            result[0].Name = recordset.recordsets[0][0].Name;
                             res.status(200).json({
                                 status: 1 ,
                                 errorMessage: null ,
@@ -50,7 +50,7 @@ exports.login =  (req, res, next) => {
                             sql.close();
                         }
                         else {
-                            res.status(204).json({
+                            res.status(404).json({
                                 status: 0 ,
                                 errorMessage: 'user not found' ,
                                 data: null

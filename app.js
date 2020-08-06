@@ -7,7 +7,10 @@ const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const loginRoute = require('./routes/login');
+const loginRouter = require('./routes/login');
+const getAllReportStatusRouter = require('./routes/get-all-report-status');
+const getOrganizationUniteRouter = require('./routes/get-organization-unit');
+const getCreditorAmountsLimit = require('./routes/get-creditor-amounts-limit')
 
 
 const app = express();
@@ -40,7 +43,11 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/login' , loginRoute);
+app.use('/login' , loginRouter);//login for manager
+app.use('/get-all-report-status' , getAllReportStatusRouter); //get all status in first pages of manager app
+app.use('/get-organization-unit' , getOrganizationUniteRouter); //get all organization units for filter
+app.use('/get-creditor-amounts-limit' , getCreditorAmountsLimit);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
