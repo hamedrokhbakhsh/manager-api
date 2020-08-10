@@ -5,55 +5,106 @@ exports.getOrganizationUnit = (req, res, next) =>{
 
     const userId = req.userData.userID
 
+    const queries ={
+         organizationUint : "select ID, Name from cmn_OrganizationInformations where ID in ( select OrganizationUnit from afw_SystemUserOrganizationUnits where SystemUser = \'"+userId+"\')",
+         systemUser : 'select ID , Name from afw_SystemUsers' ,
+         orgarnization : "select ID, Title from cmn_Organizations Org where Org.ID in ( select OrgUnitRel.Organization from afw_SystemUserOrganizationUnits UserOrgUnit left join cmn_OrganizationUnitRelations OrgUnitRel on OrgUnitRel.OrganizationUnit = UserOrgUnit.OrganizationUnit where SystemUser = '"+userId+"');",
+         workShift : "select ID , Name from krf_WorkShifts"
+    }
 
-    const query = 'select ID, Name from cmn_OrganizationInformations where ID in ( select OrganizationUnit from afw_SystemUserOrganizationUnits where SystemUser = \''+userId+'\')'
+    sql.close();
 
-    sql.connect(config.config, function (err) {
-        if (err) {
+    sql.connect(config.config).then(() => {
+        return sql.query(queries.organizationUint)
+    }).then(organizationUnit => {
+        const organizationUnits = organizationUnit.recordsets[0] ;
+        sql.close();
+
+
+        sql.connect(config.config).then(() => {
+            return sql.query(queries.orgarnization)
+        }).then(organization => {
+            const organizations = organization.recordsets[0] ;
+            sql.close();
+
+            sql.connect(config.config).then(() => {
+                return sql.query(queries.systemUser)
+            }).then(systemUser => {
+                const systemUsers = systemUser.recordsets[0] ;
+                sql.close();
+
+
+                sql.connect(config.config).then(() => {
+                    return sql.query(queries.workShift)
+                }).then(workshift => {
+                    const workshifts = workshift.recordsets[0] ;
+                    sql.close();
+
+
+                    res.status(200).json({
+                        status: 1 ,
+                        errorMessage: null ,
+                        data: [
+                            {
+                                orgarnization: organizations ,
+                                organizationUnit : organizationUnits ,
+                                systemUser : systemUsers ,
+                                workshift : workshifts
+
+                            }
+                        ]
+                    })
+
+
+                }).catch(err => {
+                    res.status(500).json({
+                        status: 0 ,
+                        errorMessage: err ,
+                        data: 'internal  connection'
+                    })
+                })
+
+
+
+            }).catch(err => {
+                res.status(500).json({
+                    status: 0 ,
+                    errorMessage: err ,
+                    data: 'internal  connection'
+                })
+            })
+
+
+
+
+        }).catch(err => {
             res.status(500).json({
                 status: 0 ,
                 errorMessage: err ,
-                data: 'internull  connection'
+                data: 'internal  connection'
             })
+        })
 
-        }
 
-        var request = new sql.Request();
-        request.query(query,
-            function (err, recordset) {
-                try{
-                    if (err) {
-                        res.status(500).json({
-                            status: 0 ,
-                            errorMessage: err ,
-                            data: 'can not connection to sql server'
-                        })
-                    }
-                    if (recordset.recordsets[0][0]){
-                        res.status(200).json({
-                            status: 1 ,
-                            errorMessage: null ,
-                            data: recordset.recordsets[0]
-                        })
-                        sql.close();
-                    }
-                    else {
-                        res.status(204).json({
-                            status: 0 ,
-                            errorMessage: 'user not found' ,
-                            data: null
-                        })
-                        sql.close();
-                    }
-                    sql.close();
-                }catch (e) {
-                    res.status(500).json({
-                        status: 0 ,
-                        errorMessage: e ,
-                        data: 'internull  connection'
-                    })
-                }
 
-            });
+
+    }).catch(err => {
+        res.status(500).json({
+            status: 0 ,
+            errorMessage: err ,
+            data: 'internal  connection'
+        })
+    })
+
+    sql.on('error', err => {
+        res.status(400).json({
+            status: 0 ,
+            errorMessage: err ,
+            data: 'internal  connection'
+        })
     });
+
+
+
+
 }
