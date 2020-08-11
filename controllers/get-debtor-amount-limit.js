@@ -3,7 +3,7 @@ const sql = require('mssql');
 const db = require('../public/db');
 const config = require('../public/dbConfig');
 
-exports.getCreditorAmounts = (req, res, next) =>{
+exports.getDebtorAmounts = (req, res, next) =>{
     const userId = req.userData.userID ;
     const dateFrom = req.body.dateFrom ;
     const dateUntil = req.body.dateUntil ;
@@ -26,7 +26,7 @@ exports.getCreditorAmounts = (req, res, next) =>{
         organization = "'"+req.body.organization+"'" ;
     }
 
-    const query = `exec krf.GetManagersDayCreditorAmountsReport '${userId}', '${dateFrom}', '${dateUntil}', ${organizationUnit}, ${systemUserId}, ${workShift}, ${organization}`
+    const query = `exec krf.GetManagersDayDebtorAmountsReport '${userId}', '${dateFrom}', '${dateUntil}', ${organizationUnit}, ${systemUserId}, ${workShift}, ${organization}`
 
 
 
@@ -36,7 +36,7 @@ exports.getCreditorAmounts = (req, res, next) =>{
     }).then(result => {
         res.status(200).json({
             status: 1 ,
-            errorMessage: null ,
+            errorMessage: query ,
             data: result.recordsets[0]
         })
     }).catch(err => {

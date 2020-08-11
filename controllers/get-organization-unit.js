@@ -6,10 +6,10 @@ exports.getOrganizationUnit = (req, res, next) =>{
     const userId = req.userData.userID
 
     const queries ={
-         organizationUint : "select ID, Name from cmn_OrganizationInformations where ID in ( select OrganizationUnit from afw_SystemUserOrganizationUnits where SystemUser = \'"+userId+"\')",
+         organizationUint : `select ID, Name from cmn_OrganizationInformations where ID in ( select OrganizationUnit from afw_SystemUserOrganizationUnits where SystemUser = \'${userId}\')`,
          systemUser : 'select ID , Name from afw_SystemUsers' ,
-         orgarnization : "select ID, Title from cmn_Organizations Org where Org.ID in ( select OrgUnitRel.Organization from afw_SystemUserOrganizationUnits UserOrgUnit left join cmn_OrganizationUnitRelations OrgUnitRel on OrgUnitRel.OrganizationUnit = UserOrgUnit.OrganizationUnit where SystemUser = '"+userId+"');",
-         workShift : "select ID , Name from krf_WorkShifts"
+         organization : `select ID, Title from cmn_Organizations Org where Org.ID in ( select OrgUnitRel.Organization from afw_SystemUserOrganizationUnits UserOrgUnit left join cmn_OrganizationUnitRelations OrgUnitRel on OrgUnitRel.OrganizationUnit = UserOrgUnit.OrganizationUnit where SystemUser = '${userId}');`,
+         workShift : 'select ID , Name from krf_WorkShifts'
     }
 
     sql.close();
@@ -18,29 +18,13 @@ exports.getOrganizationUnit = (req, res, next) =>{
         return sql.query(queries.organizationUint)
     }).then(organizationUnit => {
         const organizationUnits = organizationUnit.recordsets[0] ;
-        sql.close();
-
-
-        sql.connect(config.config).then(() => {
-            return sql.query(queries.orgarnization)
-        }).then(organization => {
+         sql.query(queries.organization).then(organization => {
             const organizations = organization.recordsets[0] ;
-            sql.close();
-
-            sql.connect(config.config).then(() => {
-                return sql.query(queries.systemUser)
-            }).then(systemUser => {
+             sql.query(queries.systemUser).then(systemUser => {
                 const systemUsers = systemUser.recordsets[0] ;
-                sql.close();
-
-
-                sql.connect(config.config).then(() => {
-                    return sql.query(queries.workShift)
-                }).then(workshift => {
+                 sql.query(queries.workShift).then(workshift => {
                     const workshifts = workshift.recordsets[0] ;
                     sql.close();
-
-
                     res.status(200).json({
                         status: 1 ,
                         errorMessage: null ,
