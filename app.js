@@ -10,9 +10,9 @@ const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const getAllReportStatusRouter = require('./routes/get-all-report-status');
 const getAllDataFilterRouter = require('./routes/get-organization-unit');
-const getCreditorAmountsLimit = require('./routes/get-creditor-amounts-limit')
-const getDebtorAmountsLimit = require('./routes/get-debtor-amount-limit')
-
+const getCreditorAmountsLimitRouter = require('./routes/get-creditor-amounts-limit')
+const getDebtorAmountsLimitRouter = require('./routes/get-debtor-amount-limit');
+const getPoolReceptionLimitRouter = require('./routes/get_pool_reception_limit') ;
 
 const app = express();
 
@@ -47,8 +47,9 @@ app.use('/users', usersRouter);
 app.use('/login' , loginRouter);//login for manager
 app.use('/get-all-report-status' , getAllReportStatusRouter); //get all status in first pages of manager app
 app.use('/get-all-data-filter' , getAllDataFilterRouter); //get all organization units for filter
-app.use('/get-creditor-amounts-limit' , getCreditorAmountsLimit); //get limit creditor
-app.use('/get-debtor-amounts-limit', getDebtorAmountsLimit);
+app.use('/get-creditor-amounts-limit' , getCreditorAmountsLimitRouter); //get limit creditor
+app.use('/get-debtor-amounts-limit', getDebtorAmountsLimitRouter);
+app.use('/get-pool-reception-limit' , getPoolReceptionLimitRouter);
 
 
 // catch 404 and forward to error handler

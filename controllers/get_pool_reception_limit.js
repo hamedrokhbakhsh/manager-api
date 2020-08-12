@@ -1,9 +1,10 @@
 
+
 const sql = require('mssql');
 const db = require('../public/db');
 const config = require('../public/dbConfig');
+exports.getPoolReceptionLimit =  (req, res, next) => {
 
-exports.getDebtorAmounts = (req, res, next) =>{
     const userId = req.userData.userID ;
     const dateFrom = req.body.dateFrom ;
     const dateUntil = req.body.dateUntil ;
@@ -26,8 +27,7 @@ exports.getDebtorAmounts = (req, res, next) =>{
         organization = "'"+req.body.organization+"'" ;
     }
 
-    const query = `exec krf.GetManagersDayDebtorAmountsReport '${userId}', '${dateFrom}', '${dateUntil}', ${organizationUnit}, ${systemUserId}, ${workShift}, ${organization}`
-
+    const query = `exec krf.GetManagersReceptionStatus '${userId}', '${dateFrom}', '${dateUntil}', ${organizationUnit}, ${systemUserId}, ${workShift}, ${organization}`
 
 
     sql.close();
@@ -36,7 +36,7 @@ exports.getDebtorAmounts = (req, res, next) =>{
     }).then(result => {
         res.status(200).json({
             status: 1 ,
-            errorMessage: null ,
+            errorMessage: query ,
             data: result.recordsets[0]
         })
     }).catch(err => {
@@ -55,5 +55,8 @@ exports.getDebtorAmounts = (req, res, next) =>{
             data: 'internal  connection'
         })
     });
+
+
+
 
 }

@@ -7,9 +7,10 @@ exports.getOrganizationUnit = (req, res, next) =>{
 
     const queries ={
          organizationUint : `select ID, Name from cmn_OrganizationInformations where ID in ( select OrganizationUnit from afw_SystemUserOrganizationUnits where SystemUser = \'${userId}\')`,
-         systemUser : 'select ID , Name from afw_SystemUsers' ,
+         systemUser : '\n' +
+             'select ID , DisplayName from afw_SystemUsersView' ,
          organization : `select ID, Title from cmn_Organizations Org where Org.ID in ( select OrgUnitRel.Organization from afw_SystemUserOrganizationUnits UserOrgUnit left join cmn_OrganizationUnitRelations OrgUnitRel on OrgUnitRel.OrganizationUnit = UserOrgUnit.OrganizationUnit where SystemUser = '${userId}');`,
-         workShift : 'select ID , Name from krf_WorkShifts'
+         workShift : `select ID, Name from krf_WorkShifts where OrganizationUnit in (select OrganizationUnit from afw_SystemUserOrganizationUnits where SystemUser = '${userId}');`
     }
 
     sql.close();
@@ -30,10 +31,10 @@ exports.getOrganizationUnit = (req, res, next) =>{
                         errorMessage: null ,
                         data: [
                             {
-                                orgarnization: organizations ,
+                                organization: organizations ,
                                 organizationUnit : organizationUnits ,
                                 systemUser : systemUsers ,
-                                workshift : workshifts
+                                workShift : workshifts
 
                             }
                         ]
