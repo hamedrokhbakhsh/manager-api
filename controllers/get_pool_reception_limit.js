@@ -36,7 +36,7 @@ exports.getPoolReceptionLimit =  (req, res, next) => {
     }).then(result => {
         res.status(200).json({
             status: 1 ,
-            errorMessage: query ,
+            errorMessage: null ,
             data: result.recordsets[0]
         })
     }).catch(err => {

@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
 app.use('/login' , loginRouter);//login for manager
 app.use('/get-all-report-status' , getAllReportStatusRouter); //get all status in first pages of manager app
 app.use('/get-all-data-filter' , getAllDataFilterRouter); //get all organization units for filter
