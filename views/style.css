@@ -1,0 +1,41 @@
+body{
+    background: #a0b53c;
+}
+
+.text-under-line{
+    width: 200px;
+    height: 5px;
+    margin: 0 auto;
+    background: blue!important;
+}
+
+.text-muted{
+    margin-top: 1em;
+}
+
+.card{
+    padding-top: 2em;
+}
+i{
+    margin-top: 1em;
+    height: 100px;
+
+
+}
+.fa{
+    font-size: 4rem;
+}
+
+h1{
+    font-family: 'Modak', cursive;
+}
+h4{
+    font-family: 'Scope One', serif;
+}
+
+.under-line-question{
+    width: 100px;
+    height: 5px;
+    margin: 0 auto;;
+    background: blue!important;
+}

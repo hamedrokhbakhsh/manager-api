@@ -6,13 +6,14 @@ const logger = require('morgan');
 const bodyParser = require('body-parser')
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+//const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const getAllReportStatusRouter = require('./routes/get-all-report-status');
 const getAllDataFilterRouter = require('./routes/get-organization-unit');
 const getCreditorAmountsLimitRouter = require('./routes/get-creditor-amounts-limit')
 const getDebtorAmountsLimitRouter = require('./routes/get-debtor-amount-limit');
 const getPoolReceptionLimitRouter = require('./routes/get_pool_reception_limit') ;
+const getQuestion = require('./routes/get-question');
 
 const app = express();
 
@@ -27,6 +28,9 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin' , '*');
@@ -50,6 +54,8 @@ app.use('/get-all-data-filter' , getAllDataFilterRouter); //get all organization
 app.use('/get-creditor-amounts-limit' , getCreditorAmountsLimitRouter); //get limit creditor
 app.use('/get-debtor-amounts-limit', getDebtorAmountsLimitRouter);
 app.use('/get-pool-reception-limit' , getPoolReceptionLimitRouter);
+app.use('/get-question' , getQuestion);
+
 
 
 // catch 404 and forward to error handler
