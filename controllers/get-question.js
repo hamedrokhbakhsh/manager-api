@@ -8,8 +8,10 @@ const config = require('../public/dbConfig');
 
 
 exports.getQuestion = (req, res, next) =>{
+    const id = req.body.id;
+    const query = `exec krf.GetMembershipQuestions \'${id}\'`
 
-    //const query = 'exec krf.GetMembershipQuestions \'79EC2DFA-C7E7-48E0-9A1D-B119FA021B30\''
+
 
     const json = [
         {
@@ -96,7 +98,7 @@ exports.getQuestion = (req, res, next) =>{
     ]
     res.status(200).json({
         status: 1,
-        errorMessage: null ,
+        errorMessage: query ,
         data: json
     })
     /*   res.render('', { title: 'varzeshSoft' });
