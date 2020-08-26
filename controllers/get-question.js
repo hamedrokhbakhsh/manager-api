@@ -94,7 +94,11 @@ exports.getQuestion = (req, res, next) =>{
             "QuestionTitle": "سوال بیستم؟"
         }
     ]
-    res.render('get-question', {title: 'title', json});
+    res.status(200).json({
+        status: 1,
+        errorMessage: null ,
+        data: json
+    })
     /*   res.render('', { title: 'varzeshSoft' });
 
    sql.close();
