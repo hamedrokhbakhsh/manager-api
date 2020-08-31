@@ -14,6 +14,7 @@ const getCreditorAmountsLimitRouter = require('./routes/get-creditor-amounts-lim
 const getDebtorAmountsLimitRouter = require('./routes/get-debtor-amount-limit');
 const getPoolReceptionLimitRouter = require('./routes/get_pool_reception_limit') ;
 const getQuestion = require('./routes/get-question');
+const getContractor = require('./routes/contractor');
 
 const app = express();
 
@@ -55,6 +56,8 @@ app.use('/get-creditor-amounts-limit' , getCreditorAmountsLimitRouter); //get li
 app.use('/get-debtor-amounts-limit', getDebtorAmountsLimitRouter);
 app.use('/get-pool-reception-limit' , getPoolReceptionLimitRouter);
 app.use('/get-question' , getQuestion);
+
+app.use('/contractor' , getContractor)
 
 
 
